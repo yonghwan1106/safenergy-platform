@@ -9,8 +9,7 @@ import {
   Wind, 
   Thermometer,
   Droplets,
-  Eye,
-  Activity
+  Eye
 } from 'lucide-react'
 
 interface RadiationCardProps {

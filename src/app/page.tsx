@@ -1,12 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import { SafetyIndexCard } from '@/components/SafetyIndexCard'
 import { RadiationCard, WeatherCard, AirQualityCard } from '@/components/DataCard'
-import { DashboardData, SafetyIndex, RadiationData, WeatherData, AirQualityData } from '@/types'
+import { DashboardData } from '@/types'
 import { Shield, RefreshCw, MapPin, Clock, AlertTriangle } from 'lucide-react'
 import Link from 'next/link'
 
@@ -24,7 +23,7 @@ export default function HomePage() {
     '새울원자력본부'
   ]
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setIsLoading(true)
     try {
       // 병렬로 데이터 가져오기
@@ -56,17 +55,17 @@ export default function HomePage() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [selectedPlant])
 
   useEffect(() => {
     fetchData()
-  }, [selectedPlant])
+  }, [fetchData])
 
   // 자동 새로고침 (5분마다)
   useEffect(() => {
     const interval = setInterval(fetchData, 5 * 60 * 1000)
     return () => clearInterval(interval)
-  }, [selectedPlant])
+  }, [fetchData])
 
   if (isLoading) {
     return (

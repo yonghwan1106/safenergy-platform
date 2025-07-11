@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { SafetyIndex } from '@/types'
 import { getSafetyGradeColor } from '@/utils/safety-calculator'
-import { Shield, AlertTriangle, TrendingUp, Clock } from 'lucide-react'
+import { Shield, AlertTriangle, Clock } from 'lucide-react'
 
 interface SafetyIndexCardProps {
   safetyIndex: SafetyIndex

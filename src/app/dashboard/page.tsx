@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { RadiationChart, WeatherChart, AirQualityChart } from '@/components/DataChart'
@@ -25,7 +25,7 @@ export default function DashboardPage() {
     '새울원자력본부'
   ]
 
-  const fetchHistoricalData = async () => {
+  const fetchHistoricalData = useCallback(async () => {
     setIsLoading(true)
     try {
       // 실제 환경에서는 히스토리 API를 호출하지만, 
@@ -96,11 +96,11 @@ export default function DashboardPage() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [selectedPlant])
 
   useEffect(() => {
     fetchHistoricalData()
-  }, [selectedPlant])
+  }, [fetchHistoricalData])
 
   if (isLoading) {
     return (

@@ -1,12 +1,12 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { SafetyIndexCard } from '@/components/SafetyIndexCard'
 import { RadiationCard, WeatherCard, AirQualityCard } from '@/components/DataCard'
-import { DashboardData, PowerPlant } from '@/types'
+import { DashboardData } from '@/types'
 import { 
   MapPin, 
   ArrowLeft, 
@@ -22,7 +22,7 @@ export default function RegionsPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [selectedRegion, setSelectedRegion] = useState('고리원자력본부')
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(null)
-  const [nearbyFacilities, setNearbyFacilities] = useState<any[]>([])
+  const [nearbyFacilities, setNearbyFacilities] = useState<{ name: string; icon: string; distance: string; count: number }[]>([])
 
   const regions = [
     {
@@ -67,7 +67,7 @@ export default function RegionsPage() {
     }
   ]
 
-  const fetchRegionData = async () => {
+  const fetchRegionData = useCallback(async () => {
     setIsLoading(true)
     try {
       // 기본 데이터 가져오기
@@ -109,11 +109,11 @@ export default function RegionsPage() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [selectedRegion])
 
   useEffect(() => {
     fetchRegionData()
-  }, [selectedRegion])
+  }, [fetchRegionData])
 
   const selectedRegionData = regions.find(r => r.name === selectedRegion)
 
