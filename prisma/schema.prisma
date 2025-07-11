@@ -1,0 +1,109 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model RadiationData {
+  id              String   @id @default(cuid())
+  plantName       String
+  measurementTime DateTime
+  radiationLevel  Float
+  unit            String   @default("μSv/h")
+  status          String   @default("정상")
+  latitude        Float
+  longitude       Float
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("radiation_data")
+}
+
+model WeatherData {
+  id              String   @id @default(cuid())
+  plantName       String
+  measurementTime DateTime
+  temperature     Float
+  humidity        Float
+  windSpeed       Float
+  windDirection   String
+  rainfall        Float
+  unitTemp        String   @default("°C")
+  unitWind        String   @default("m/s")
+  unitRain        String   @default("mm")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("weather_data")
+}
+
+model AirQualityData {
+  id              String   @id @default(cuid())
+  location        String
+  measurementTime DateTime
+  pm10            Float?
+  pm25            Float?
+  o3              Float?
+  no2             Float?
+  so2             Float?
+  co              Float?
+  overallIndex    Int?
+  grade           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("air_quality_data")
+}
+
+model SafetyIndex {
+  id              String   @id @default(cuid())
+  location        String
+  calculatedTime  DateTime
+  radiationScore  Float
+  airQualityScore Float
+  weatherScore    Float
+  overallScore    Float
+  safetyGrade     String   // 안전, 주의, 경고, 위험
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("safety_index")
+}
+
+model PowerPlant {
+  id          String  @id @default(cuid())
+  name        String  @unique
+  displayName String
+  type        String  // 원자력, 수력, 양수
+  latitude    Float
+  longitude   Float
+  region      String
+  address     String
+  isActive    Boolean @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("power_plants")
+}
+
+model Alert {
+  id          String   @id @default(cuid())
+  type        String   // radiation, air_quality, weather
+  severity    String   // warning, alert, critical
+  title       String
+  message     String
+  location    String
+  isActive    Boolean  @default(true)
+  triggeredAt DateTime @default(now())
+  resolvedAt  DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("alerts")
+}
