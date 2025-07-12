@@ -132,6 +132,11 @@ export default function HomePage() {
                     지역별 정보
                   </Button>
                 </Link>
+                <Link href="/data">
+                  <Button size="sm" variant="outline" className="border-purple-200 hover:bg-purple-50">
+                    활용 공공데이터
+                  </Button>
+                </Link>
                 <Button
                   onClick={fetchData}
                   size="sm"
