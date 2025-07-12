@@ -249,7 +249,12 @@ export function SocialImpactCard({ location }: SocialImpactCardProps) {
                 },
                 { 
                   name: '환경적 편익', 
-                  score: Math.round(Object.values(socialData.environmentalBenefit).reduce((a, b) => a + b, 0) / 4),
+                  score: Math.round((
+                    Math.min(100, socialData.environmentalBenefit.carbonReduction / 100) +
+                    socialData.environmentalBenefit.airQualityImprovement +
+                    socialData.environmentalBenefit.biodiversityIndex +
+                    socialData.environmentalBenefit.renewableEnergyContribution
+                  ) / 4),
                   icon: TreePine,
                   description: '탄소절감, 대기질 개선, 청정에너지'
                 },
