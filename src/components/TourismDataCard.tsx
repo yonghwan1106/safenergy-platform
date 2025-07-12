@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 // import { Badge } from '@/components/ui/badge' // 사용하지 않음
 import { Button } from '@/components/ui/button'
@@ -26,7 +26,7 @@ export function TourismDataCard({ location }: TourismDataCardProps) {
   const [isLoading, setIsLoading] = useState(true)
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date())
 
-  const fetchTourismData = async () => {
+  const fetchTourismData = useCallback(async () => {
     setIsLoading(true)
     try {
       const response = await fetch(`/api/data/tourism?location=${location}`)
@@ -38,11 +38,11 @@ export function TourismDataCard({ location }: TourismDataCardProps) {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [location])
 
   useEffect(() => {
     fetchTourismData()
-  }, [location, fetchTourismData])
+  }, [fetchTourismData])
 
   const getTrendColor = (trend: string) => {
     switch (trend) {

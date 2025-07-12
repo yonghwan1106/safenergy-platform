@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -31,7 +31,7 @@ export function SocialImpactCard({ location }: SocialImpactCardProps) {
   const [activeTab, setActiveTab] = useState<'overview' | 'trust' | 'economic' | 'environment' | 'education'>('overview')
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date())
 
-  const fetchSocialData = async () => {
+  const fetchSocialData = useCallback(async () => {
     setIsLoading(true)
     try {
       const response = await fetch(`/api/social-impact?location=${location}`)
@@ -43,11 +43,11 @@ export function SocialImpactCard({ location }: SocialImpactCardProps) {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [location])
 
   useEffect(() => {
     fetchSocialData()
-  }, [location, fetchSocialData])
+  }, [fetchSocialData])
 
   const getScoreColor = (score: number) => {
     if (score >= 80) return 'text-green-600'

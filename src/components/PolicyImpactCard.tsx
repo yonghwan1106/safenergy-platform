@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -26,7 +26,7 @@ export function PolicyImpactCard({ location }: PolicyImpactCardProps) {
   const [isLoading, setIsLoading] = useState(true)
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date())
 
-  const fetchPolicyImpact = async () => {
+  const fetchPolicyImpact = useCallback(async () => {
     setIsLoading(true)
     try {
       const response = await fetch(`/api/policy-impact?location=${location}`)
@@ -38,7 +38,7 @@ export function PolicyImpactCard({ location }: PolicyImpactCardProps) {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [location])
 
   useEffect(() => {
     fetchPolicyImpact()

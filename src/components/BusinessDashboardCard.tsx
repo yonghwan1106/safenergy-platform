@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -30,7 +30,7 @@ export function BusinessDashboardCard({ location }: BusinessDashboardCardProps) 
   const [activeTab, setActiveTab] = useState<'overview' | 'b2g' | 'b2b' | 'growth'>('overview')
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date())
 
-  const fetchBusinessData = async () => {
+  const fetchBusinessData = useCallback(async () => {
     setIsLoading(true)
     try {
       const response = await fetch(`/api/business-metrics?location=${location}`)
@@ -42,11 +42,11 @@ export function BusinessDashboardCard({ location }: BusinessDashboardCardProps) 
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [location])
 
   useEffect(() => {
     fetchBusinessData()
-  }, [location, fetchBusinessData])
+  }, [fetchBusinessData])
 
   const getStatusColor = (status: string) => {
     switch (status) {

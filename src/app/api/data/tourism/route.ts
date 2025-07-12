@@ -42,15 +42,36 @@ export async function GET(request: NextRequest) {
     const mockData = generateMockTourismData()
     
     if (location) {
-      // 위치별 관광 데이터 검색
+      // 위치별 관광 데이터 검색 - location 파라미터 정리
+      const cleanLocation = decodeURIComponent(location).replace('원자력본부', '')
       const locationData = mockData.find(d => 
         d.location === location || 
         d.shortName === location ||
-        d.location.includes(location)
+        d.shortName === cleanLocation ||
+        d.location.includes(location) ||
+        d.location.includes(cleanLocation)
       )
       
       if (!locationData) {
-        return NextResponse.json({ error: 'Location not found' }, { status: 404 })
+        // 기본 데이터 반환 (위치를 찾지 못했을 때)
+        const defaultData = {
+          location: location,
+          shortName: cleanLocation,
+          measurementTime: new Date(),
+          touristCount: Math.floor(Math.random() * 5000) + 2000, // 2,000-7,000명
+          popularAttractions: ['지역 명소 1', '지역 명소 2', '지역 명소 3'],
+          safetyRating: 4,
+          accommodationOccupancy: Math.floor(Math.random() * 30) + 70, // 70-100%
+          averageStayDuration: 2,
+          seasonalTrend: '유지'
+        }
+        
+        return NextResponse.json({
+          id: 'tourism-default-' + Date.now(),
+          ...defaultData,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        })
       }
       
       try {
