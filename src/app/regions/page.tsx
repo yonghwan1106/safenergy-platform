@@ -15,7 +15,9 @@ import {
   TreePine,
   Waves,
   Award,
-  RefreshCw
+  RefreshCw,
+  Menu,
+  X
 } from 'lucide-react'
 import Link from 'next/link'
 
@@ -24,6 +26,7 @@ export default function RegionsPage() {
   const [selectedRegion, setSelectedRegion] = useState('고리원자력본부')
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(null)
   const [nearbyFacilities, setNearbyFacilities] = useState<{ name: string; icon: string; distance: string; count: number }[]>([])
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const regions = useMemo(() => [
     {
@@ -171,13 +174,53 @@ export default function RegionsPage() {
                 </div>
               </div>
             </div>
-            <Link href="/dashboard">
-              <Button className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-lg" size="sm">
-                상세 대시보드
-              </Button>
-            </Link>
+            <div className="flex items-center space-x-2">
+              {/* 모바일 메뉴 버튼 */}
+              <div className="flex md:hidden">
+                <Button
+                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                  size="sm"
+                  variant="outline"
+                  className="flex items-center border-blue-200 hover:bg-blue-50"
+                >
+                  {isMobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+                </Button>
+              </div>
+              
+              {/* 데스크톱 메뉴 */}
+              <div className="hidden md:block">
+                <Link href="/dashboard">
+                  <Button className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-lg" size="sm">
+                    상세 대시보드
+                  </Button>
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
+        
+        {/* 모바일 메뉴 슬라이드 */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden bg-white/95 backdrop-blur-md border-t border-blue-100 shadow-lg">
+            <div className="max-w-7xl mx-auto px-4 py-4 space-y-3">
+              <Link href="/" onClick={() => setIsMobileMenuOpen(false)}>
+                <Button size="sm" variant="outline" className="w-full border-blue-200 hover:bg-blue-50">
+                  홈
+                </Button>
+              </Link>
+              <Link href="/dashboard" onClick={() => setIsMobileMenuOpen(false)}>
+                <Button size="sm" className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-lg">
+                  상세 대시보드
+                </Button>
+              </Link>
+              <Link href="/data" onClick={() => setIsMobileMenuOpen(false)}>
+                <Button size="sm" variant="outline" className="w-full border-purple-200 hover:bg-purple-50">
+                  활용 공공데이터
+                </Button>
+              </Link>
+            </div>
+          </div>
+        )}
       </header>
 
       {/* 메인 컨텐츠 */}

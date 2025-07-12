@@ -35,7 +35,9 @@ import {
   Clock,
   Info,
   AlertCircle,
-  Wifi
+  Wifi,
+  Menu,
+  X
 } from 'lucide-react'
 import Link from 'next/link'
 
@@ -48,6 +50,7 @@ export default function DataPage() {
     uptime: 0
   })
   const [searchTerm, setSearchTerm] = useState('')
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState('all')
 
   // 실시간 데이터 통계 업데이트
@@ -406,27 +409,65 @@ export default function DataPage() {
               </div>
             </div>
             <div className="flex items-center space-x-2">
-              <Link href="/dashboard">
-                <Button variant="outline" size="sm" className="border-blue-200 hover:bg-blue-50">
-                  대시보드
+              {/* 모바일 메뉴 버튼 */}
+              <div className="flex md:hidden">
+                <Button
+                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                  size="sm"
+                  variant="outline"
+                  className="flex items-center border-blue-200 hover:bg-blue-50"
+                >
+                  {isMobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+                </Button>
+              </div>
+              
+              {/* 데스크톱 메뉴 */}
+              <div className="hidden md:flex items-center space-x-2">
+                <Link href="/dashboard">
+                  <Button variant="outline" size="sm" className="border-blue-200 hover:bg-blue-50">
+                    대시보드
+                  </Button>
+                </Link>
+                <Link href="/regions">
+                  <Button className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-lg" size="sm">
+                    지역정보
                 </Button>
               </Link>
-              <Link href="/regions">
-                <Button className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-lg" size="sm">
-                  지역정보
+                <Button 
+                  onClick={updateDataStats} 
+                  size="sm" 
+                  variant="outline" 
+                  className="border-green-200 hover:bg-green-50"
+                >
+                  <RefreshCw className="w-4 h-4" />
                 </Button>
-              </Link>
-              <Button 
-                onClick={updateDataStats} 
-                size="sm" 
-                variant="outline" 
-                className="border-green-200 hover:bg-green-50"
-              >
-                <RefreshCw className="w-4 h-4" />
-              </Button>
+              </div>
             </div>
           </div>
         </div>
+        
+        {/* 모바일 메뉴 슬라이드 */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden bg-white/95 backdrop-blur-md border-t border-blue-100 shadow-lg">
+            <div className="max-w-7xl mx-auto px-4 py-4 space-y-3">
+              <Link href="/" onClick={() => setIsMobileMenuOpen(false)}>
+                <Button size="sm" variant="outline" className="w-full border-blue-200 hover:bg-blue-50">
+                  홈
+                </Button>
+              </Link>
+              <Link href="/dashboard" onClick={() => setIsMobileMenuOpen(false)}>
+                <Button size="sm" variant="outline" className="w-full border-blue-200 hover:bg-blue-50">
+                  상세 대시보드
+                </Button>
+              </Link>
+              <Link href="/regions" onClick={() => setIsMobileMenuOpen(false)}>
+                <Button size="sm" className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-lg">
+                  지역별 정보
+                </Button>
+              </Link>
+            </div>
+          </div>
+        )}
       </header>
 
       {/* 탭 네비게이션 */}

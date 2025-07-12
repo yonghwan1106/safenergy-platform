@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { RadiationChart, WeatherChart, AirQualityChart } from '@/components/DataChart'
 import { SafetyIndexCard } from '@/components/SafetyIndexCard'
 import { RadiationData, WeatherData, AirQualityData, SafetyIndex } from '@/types'
-import { BarChart3, RefreshCw, ArrowLeft, MapPin, Award } from 'lucide-react'
+import { BarChart3, RefreshCw, ArrowLeft, MapPin, Award, Menu, X } from 'lucide-react'
 import Link from 'next/link'
 
 export default function DashboardPage() {
@@ -16,6 +16,7 @@ export default function DashboardPage() {
   const [weatherData, setWeatherData] = useState<WeatherData[]>([])
   const [airQualityData, setAirQualityData] = useState<AirQualityData[]>([])
   const [safetyIndex, setSafetyIndex] = useState<SafetyIndex | null>(null)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const powerPlants = [
     '고리원자력본부',
@@ -155,16 +156,54 @@ export default function DashboardPage() {
                 </div>
               </div>
             </div>
-            <Button
-              onClick={fetchHistoricalData}
-              size="sm"
-              className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-lg"
-            >
-              <RefreshCw className="w-4 h-4" />
-              <span>새로고침</span>
-            </Button>
+            <div className="flex items-center space-x-2">
+              {/* 모바일 메뉴 버튼 */}
+              <div className="flex md:hidden">
+                <Button
+                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                  size="sm"
+                  variant="outline"
+                  className="flex items-center border-blue-200 hover:bg-blue-50"
+                >
+                  {isMobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+                </Button>
+              </div>
+              
+              {/* 데스크톱 및 새로고침 버튼 */}
+              <Button
+                onClick={fetchHistoricalData}
+                size="sm"
+                className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-lg"
+              >
+                <RefreshCw className="w-4 h-4" />
+                <span className="hidden sm:inline">새로고침</span>
+              </Button>
+            </div>
           </div>
         </div>
+        
+        {/* 모바일 메뉴 슬라이드 */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden bg-white/95 backdrop-blur-md border-t border-blue-100 shadow-lg">
+            <div className="max-w-7xl mx-auto px-4 py-4 space-y-3">
+              <Link href="/" onClick={() => setIsMobileMenuOpen(false)}>
+                <Button size="sm" variant="outline" className="w-full border-blue-200 hover:bg-blue-50">
+                  홈
+                </Button>
+              </Link>
+              <Link href="/regions" onClick={() => setIsMobileMenuOpen(false)}>
+                <Button size="sm" variant="outline" className="w-full border-blue-200 hover:bg-blue-50">
+                  지역별 정보
+                </Button>
+              </Link>
+              <Link href="/data" onClick={() => setIsMobileMenuOpen(false)}>
+                <Button size="sm" variant="outline" className="w-full border-purple-200 hover:bg-purple-50">
+                  활용 공공데이터
+                </Button>
+              </Link>
+            </div>
+          </div>
+        )}
       </header>
 
       {/* 메인 컨텐츠 */}
