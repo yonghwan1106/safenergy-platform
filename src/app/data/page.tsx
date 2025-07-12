@@ -11,7 +11,6 @@ import {
   ExternalLink,
   Zap,
   Cloud,
-  Wind,
   Eye,
   Shield,
   Building2,
