@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { RadiationChart, WeatherChart, AirQualityChart } from '@/components/DataChart'
 import { SafetyIndexCard } from '@/components/SafetyIndexCard'
 import { RadiationData, WeatherData, AirQualityData, SafetyIndex } from '@/types'
-import { BarChart3, RefreshCw, ArrowLeft, MapPin } from 'lucide-react'
+import { BarChart3, RefreshCw, ArrowLeft, MapPin, Award } from 'lucide-react'
 import Link from 'next/link'
 
 export default function DashboardPage() {
@@ -104,38 +104,61 @@ export default function DashboardPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex items-center justify-center">
         <div className="text-center">
-          <RefreshCw className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-2" />
-          <p className="text-gray-600">대시보드 데이터를 불러오는 중...</p>
+          <div className="relative mb-8">
+            <div className="absolute inset-0 bg-blue-600 rounded-full blur-xl opacity-20 animate-pulse"></div>
+            <BarChart3 className="w-16 h-16 text-blue-600 mx-auto relative z-10" />
+          </div>
+          <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
+            상세 대시보드
+          </h2>
+          <div className="flex items-center justify-center space-x-2 mb-4">
+            <RefreshCw className="w-6 h-6 animate-spin text-blue-600" />
+            <p className="text-gray-700 font-medium">대시보드 데이터를 불러오는 중...</p>
+          </div>
+          <div className="flex items-center justify-center space-x-1 mb-2">
+            <Award className="w-4 h-4 text-amber-500" />
+            <p className="text-sm text-amber-600">한국수력원자력 공공데이터 활용 아이디어 공모전 출품작</p>
+          </div>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
       {/* 헤더 */}
-      <header className="bg-white shadow-sm border-b">
+      <header className="bg-white/80 backdrop-blur-md shadow-lg border-b border-blue-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+          <div className="flex justify-between items-center h-20">
             <div className="flex items-center space-x-4">
               <Link href="/">
-                <Button variant="ghost" size="sm">
+                <Button variant="ghost" size="sm" className="hover:bg-blue-50">
                   <ArrowLeft className="w-4 h-4 mr-2" />
                   홈으로
                 </Button>
               </Link>
-              <div className="flex items-center space-x-2">
-                <BarChart3 className="w-6 h-6 text-blue-600" />
-                <h1 className="text-xl font-bold text-gray-900">상세 대시보드</h1>
+              <div className="flex items-center space-x-3">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-blue-600 rounded-full blur-lg opacity-20"></div>
+                  <BarChart3 className="w-8 h-8 text-blue-600 relative z-10" />
+                </div>
+                <div>
+                  <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
+                    상세 대시보드
+                  </h1>
+                  <div className="flex items-center space-x-1">
+                    <Award className="w-3 h-3 text-amber-500" />
+                    <p className="text-xs text-amber-600 font-medium">한국수력원자력 공공데이터 활용 아이디어 공모전 출품작</p>
+                  </div>
+                </div>
               </div>
             </div>
             <Button
               onClick={fetchHistoricalData}
               size="sm"
-              variant="outline"
-              className="flex items-center space-x-2"
+              className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-lg"
             >
               <RefreshCw className="w-4 h-4" />
               <span>새로고침</span>
