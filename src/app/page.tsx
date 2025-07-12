@@ -11,7 +11,7 @@ import { TourismDataCard } from '@/components/TourismDataCard'
 import { BusinessDashboardCard } from '@/components/BusinessDashboardCard'
 import { SocialImpactCard } from '@/components/SocialImpactCard'
 import { DashboardData } from '@/types'
-import { Shield, RefreshCw, Clock, AlertTriangle, Zap, Award, Globe } from 'lucide-react'
+import { Shield, RefreshCw, Clock, AlertTriangle, Zap, Award, Globe, Menu, X } from 'lucide-react'
 import Link from 'next/link'
 
 export default function HomePage() {
@@ -19,6 +19,7 @@ export default function HomePage() {
   const [selectedPlant, setSelectedPlant] = useState('고리원자력본부')
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(null)
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date())
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const powerPlants = [
     '고리원자력본부',
@@ -129,7 +130,7 @@ export default function HomePage() {
               </div>
               
               {/* 모바일 메뉴 버튼 */}
-              <div className="flex md:hidden">
+              <div className="flex md:hidden items-center space-x-2">
                 <Button
                   onClick={fetchData}
                   size="sm"
@@ -137,6 +138,14 @@ export default function HomePage() {
                   className="flex items-center border-green-200 hover:bg-green-50"
                 >
                   <RefreshCw className="w-4 h-4" />
+                </Button>
+                <Button
+                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                  size="sm"
+                  variant="outline"
+                  className="flex items-center border-blue-200 hover:bg-blue-50"
+                >
+                  {isMobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
                 </Button>
               </div>
               
@@ -173,6 +182,33 @@ export default function HomePage() {
             </div>
           </div>
         </div>
+        
+        {/* 모바일 메뉴 슬라이드 */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden bg-white/95 backdrop-blur-md border-t border-blue-100 shadow-lg">
+            <div className="max-w-7xl mx-auto px-4 py-4 space-y-3">
+              <Link href="/dashboard" onClick={() => setIsMobileMenuOpen(false)}>
+                <Button size="sm" className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-lg">
+                  상세 대시보드
+                </Button>
+              </Link>
+              <Link href="/regions" onClick={() => setIsMobileMenuOpen(false)}>
+                <Button size="sm" variant="outline" className="w-full border-blue-200 hover:bg-blue-50">
+                  지역별 정보
+                </Button>
+              </Link>
+              <Link href="/data" onClick={() => setIsMobileMenuOpen(false)}>
+                <Button size="sm" variant="outline" className="w-full border-purple-200 hover:bg-purple-50">
+                  활용 공공데이터
+                </Button>
+              </Link>
+              <div className="flex items-center justify-center space-x-2 text-sm text-gray-600 bg-white/60 rounded-lg px-3 py-2">
+                <Clock className="w-4 h-4" />
+                <span>최종 업데이트: {lastUpdated.toLocaleString()}</span>
+              </div>
+            </div>
+          </div>
+        )}
       </header>
 
       {/* 메인 컨텐츠 */}
