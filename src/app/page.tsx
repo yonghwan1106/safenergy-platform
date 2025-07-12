@@ -104,42 +104,60 @@ export default function HomePage() {
       {/* 헤더 */}
       <header className="bg-white/80 backdrop-blur-md shadow-lg border-b border-blue-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
+          <div className="flex justify-between items-center h-16 sm:h-20">
             <div className="flex items-center space-x-4">
               <div className="relative">
                 <div className="absolute inset-0 bg-blue-600 rounded-full blur-lg opacity-20"></div>
                 <Shield className="w-10 h-10 text-blue-600 relative z-10" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
+                <h1 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
                   SafeNergy
                 </h1>
-                <p className="text-sm text-gray-600 font-medium">에너지 안전 통합 모니터링 플랫폼</p>
+                <p className="text-xs sm:text-sm text-gray-600 font-medium">에너지 안전 통합 모니터링 플랫폼</p>
                 <div className="flex items-center space-x-1 mt-1">
                   <Award className="w-3 h-3 text-amber-500" />
-                  <p className="text-xs text-amber-600 font-medium">한국수력원자력 공공데이터 활용 아이디어 공모전 출품작</p>
+                  <p className="text-xs text-amber-600 font-medium hidden sm:block">한국수력원자력 공공데이터 활용 아이디어 공모전 출품작</p>
+                  <p className="text-xs text-amber-600 font-medium sm:hidden">KHNP 공모전 출품작</p>
                 </div>
               </div>
             </div>
-            <div className="flex items-center space-x-4">
-              <div className="hidden md:flex items-center space-x-2 text-sm text-gray-600 bg-white/60 rounded-lg px-3 py-2">
+            <div className="flex items-center space-x-2 sm:space-x-4">
+              <div className="hidden lg:flex items-center space-x-2 text-sm text-gray-600 bg-white/60 rounded-lg px-3 py-2">
                 <Clock className="w-4 h-4" />
                 <span>최종 업데이트: {lastUpdated.toLocaleString()}</span>
               </div>
-              <div className="flex items-center space-x-2">
+              
+              {/* 모바일 메뉴 버튼 */}
+              <div className="flex md:hidden">
+                <Button
+                  onClick={fetchData}
+                  size="sm"
+                  variant="outline"
+                  className="flex items-center border-green-200 hover:bg-green-50"
+                >
+                  <RefreshCw className="w-4 h-4" />
+                </Button>
+              </div>
+              
+              {/* 데스크톱 메뉴 */}
+              <div className="hidden md:flex items-center space-x-2">
                 <Link href="/dashboard">
                   <Button size="sm" className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-lg">
-                    상세 대시보드
+                    <span className="hidden lg:inline">상세 대시보드</span>
+                    <span className="lg:hidden">대시보드</span>
                   </Button>
                 </Link>
                 <Link href="/regions">
                   <Button size="sm" variant="outline" className="border-blue-200 hover:bg-blue-50">
-                    지역별 정보
+                    <span className="hidden lg:inline">지역별 정보</span>
+                    <span className="lg:hidden">지역</span>
                   </Button>
                 </Link>
                 <Link href="/data">
                   <Button size="sm" variant="outline" className="border-purple-200 hover:bg-purple-50">
-                    활용 공공데이터
+                    <span className="hidden lg:inline">활용 공공데이터</span>
+                    <span className="lg:hidden">데이터</span>
                   </Button>
                 </Link>
                 <Button
@@ -149,7 +167,7 @@ export default function HomePage() {
                   className="flex items-center space-x-2 border-green-200 hover:bg-green-50"
                 >
                   <RefreshCw className="w-4 h-4" />
-                  <span className="hidden sm:inline">새로고침</span>
+                  <span className="hidden xl:inline">새로고침</span>
                 </Button>
               </div>
             </div>
@@ -174,19 +192,20 @@ export default function HomePage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
                 {powerPlants.map((plant) => (
                   <Button
                     key={plant}
                     variant={selectedPlant === plant ? "default" : "outline"}
                     onClick={() => setSelectedPlant(plant)}
-                    className={`text-sm font-medium transition-all duration-200 ${
+                    className={`text-xs sm:text-sm font-medium transition-all duration-200 py-2 px-3 ${
                       selectedPlant === plant 
                         ? 'bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 shadow-lg transform scale-105' 
                         : 'border-blue-200 hover:bg-blue-50 hover:border-blue-300 hover:shadow-md'
                     }`}
                   >
-                    {plant}
+                    <span className="hidden sm:inline">{plant}</span>
+                    <span className="sm:hidden">{plant.replace('원자력본부', '')}</span>
                   </Button>
                 ))}
               </div>
@@ -276,36 +295,36 @@ export default function HomePage() {
 
       {/* 푸터 */}
       <footer className="bg-gradient-to-r from-blue-900 via-blue-800 to-green-800 text-white mt-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center md:text-left">
-              <div className="flex items-center justify-center md:justify-start space-x-3 mb-4">
-                <Shield className="w-8 h-8 text-blue-300" />
-                <h3 className="text-xl font-bold">SafeNergy</h3>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            <div className="text-center sm:text-left lg:text-left">
+              <div className="flex items-center justify-center sm:justify-start space-x-3 mb-3 sm:mb-4">
+                <Shield className="w-6 sm:w-8 h-6 sm:h-8 text-blue-300" />
+                <h3 className="text-lg sm:text-xl font-bold">SafeNergy</h3>
               </div>
-              <p className="text-blue-100 text-sm leading-relaxed">
+              <p className="text-blue-100 text-xs sm:text-sm leading-relaxed">
                 한국의 에너지 안전을 위한<br />
                 통합 모니터링 플랫폼
               </p>
             </div>
             
             <div className="text-center">
-              <div className="flex items-center justify-center space-x-2 mb-4">
-                <Award className="w-5 h-5 text-amber-400" />
-                <h4 className="text-lg font-semibold text-amber-100">공모전 출품작</h4>
+              <div className="flex items-center justify-center space-x-2 mb-3 sm:mb-4">
+                <Award className="w-4 sm:w-5 h-4 sm:h-5 text-amber-400" />
+                <h4 className="text-base sm:text-lg font-semibold text-amber-100">공모전 출품작</h4>
               </div>
-              <p className="text-blue-100 text-sm leading-relaxed">
+              <p className="text-blue-100 text-xs sm:text-sm leading-relaxed">
                 한국수력원자력<br />
                 공공데이터 활용 아이디어 공모전
               </p>
             </div>
             
-            <div className="text-center md:text-right">
-              <div className="flex items-center justify-center md:justify-end space-x-2 mb-4">
-                <Globe className="w-5 h-5 text-green-400" />
-                <h4 className="text-lg font-semibold text-green-100">데이터 제공</h4>
+            <div className="text-center sm:col-span-2 lg:col-span-1 lg:text-right">
+              <div className="flex items-center justify-center lg:justify-end space-x-2 mb-3 sm:mb-4">
+                <Globe className="w-4 sm:w-5 h-4 sm:h-5 text-green-400" />
+                <h4 className="text-base sm:text-lg font-semibold text-green-100">데이터 제공</h4>
               </div>
-              <p className="text-blue-100 text-sm leading-relaxed">
+              <p className="text-blue-100 text-xs sm:text-sm leading-relaxed">
                 한국수력원자력<br />
                 환경부 에어코리아<br />
                 기상청
@@ -313,8 +332,8 @@ export default function HomePage() {
             </div>
           </div>
           
-          <div className="border-t border-blue-700 mt-8 pt-6 text-center">
-            <p className="text-blue-200 text-sm">
+          <div className="border-t border-blue-700 mt-6 sm:mt-8 pt-4 sm:pt-6 text-center">
+            <p className="text-blue-200 text-xs sm:text-sm">
               © 2025 SafeNergy. All rights reserved. | 에너지 안전 통합 모니터링 플랫폼
             </p>
           </div>
