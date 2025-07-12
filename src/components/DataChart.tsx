@@ -39,7 +39,7 @@ export function RadiationChart({ data }: RadiationChartProps) {
             <XAxis dataKey="time" />
             <YAxis />
             <Tooltip 
-              formatter={(value: number) => [`${value.toFixed(3)} μSv/h`, '방사선량']}
+              formatter={(value: number) => [`${value?.toFixed(3) || 'N/A'} μSv/h`, '방사선량']}
               labelFormatter={(label) => `시간: ${label}`}
             />
             <Line 

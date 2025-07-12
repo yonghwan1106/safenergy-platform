@@ -46,7 +46,7 @@ export function RadiationCard({ data }: RadiationCardProps) {
         <div className="space-y-2">
           <div className="flex items-baseline space-x-2">
             <span className="text-2xl font-bold text-blue-600">
-              {data.radiationLevel.toFixed(3)}
+              {data.radiationLevel?.toFixed(3) || 'N/A'}
             </span>
             <span className="text-sm text-gray-500">{data.unit}</span>
           </div>

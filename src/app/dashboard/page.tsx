@@ -193,7 +193,7 @@ export default function DashboardPage() {
               <div className="text-center">
                 <div className="text-2xl font-bold text-blue-600">
                   {radiationData.length > 0 ? 
-                    `${Math.max(...radiationData.map(d => d.radiationLevel)).toFixed(3)}` : 
+                    `${Math.max(...radiationData.map(d => d.radiationLevel || 0)).toFixed(3)}` : 
                     'N/A'
                   }
                 </div>
@@ -202,7 +202,7 @@ export default function DashboardPage() {
               <div className="text-center">
                 <div className="text-2xl font-bold text-green-600">
                   {weatherData.length > 0 ? 
-                    `${Math.max(...weatherData.map(d => d.temperature)).toFixed(1)}°C` : 
+                    `${Math.max(...weatherData.map(d => d.temperature || 0)).toFixed(1)}°C` : 
                     'N/A'
                   }
                 </div>
