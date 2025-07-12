@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -24,7 +24,7 @@ export default function RegionsPage() {
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(null)
   const [nearbyFacilities, setNearbyFacilities] = useState<{ name: string; icon: string; distance: string; count: number }[]>([])
 
-  const regions = [
+  const regions = useMemo(() => [
     {
       name: '고리원자력본부',
       location: '부산광역시 기장군',
@@ -65,7 +65,7 @@ export default function RegionsPage() {
       nearbyTourism: ['삼척 해수욕장', '환선굴', '대금굴'],
       population: '약 7만명 (삼척시)'
     }
-  ]
+  ], [])
 
   const fetchRegionData = useCallback(async () => {
     setIsLoading(true)
@@ -109,7 +109,7 @@ export default function RegionsPage() {
     } finally {
       setIsLoading(false)
     }
-  }, [selectedRegion])
+  }, [selectedRegion, regions])
 
   useEffect(() => {
     fetchRegionData()

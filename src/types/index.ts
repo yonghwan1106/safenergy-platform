@@ -27,14 +27,14 @@ export interface AirQualityData {
   id: string
   location: string
   measurementTime: Date
-  pm10?: number
-  pm25?: number
-  o3?: number
-  no2?: number
-  so2?: number
-  co?: number
-  overallIndex?: number
-  grade?: string
+  pm10?: number | null
+  pm25?: number | null
+  o3?: number | null
+  no2?: number | null
+  so2?: number | null
+  co?: number | null
+  overallIndex?: number | null
+  grade?: string | null
 }
 
 export interface SafetyIndex {
