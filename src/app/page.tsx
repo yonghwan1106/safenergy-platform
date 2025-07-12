@@ -5,6 +5,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { SafetyIndexCard } from '@/components/SafetyIndexCard'
 import { RadiationCard, WeatherCard, AirQualityCard } from '@/components/DataCard'
+import { SafetyPredictionCard } from '@/components/SafetyPredictionCard'
+import { PolicyImpactCard } from '@/components/PolicyImpactCard'
+import { TourismDataCard } from '@/components/TourismDataCard'
+import { BusinessDashboardCard } from '@/components/BusinessDashboardCard'
+import { SocialImpactCard } from '@/components/SocialImpactCard'
 import { DashboardData } from '@/types'
 import { Shield, RefreshCw, Clock, AlertTriangle, Zap, Award, Globe } from 'lucide-react'
 import Link from 'next/link'
@@ -206,6 +211,33 @@ export default function HomePage() {
               </div>
               <div className="transform hover:scale-105 transition-all duration-200">
                 <AirQualityCard data={dashboardData.airQualityData} />
+              </div>
+            </div>
+
+            {/* AI 예측 및 정책 기여도 섹션 */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+              <div className="transform hover:scale-105 transition-all duration-200">
+                <SafetyPredictionCard location={selectedPlant} />
+              </div>
+              <div className="transform hover:scale-105 transition-all duration-200">
+                <PolicyImpactCard location={selectedPlant} />
+              </div>
+            </div>
+
+            {/* 관광 및 지역 경제 섹션 */}
+            <div className="mb-8">
+              <div className="transform hover:scale-105 transition-all duration-200">
+                <TourismDataCard location={selectedPlant} />
+              </div>
+            </div>
+
+            {/* 비즈니스 모델 및 사회적 영향 섹션 */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+              <div className="transform hover:scale-105 transition-all duration-200">
+                <BusinessDashboardCard location={selectedPlant} />
+              </div>
+              <div className="transform hover:scale-105 transition-all duration-200">
+                <SocialImpactCard location={selectedPlant} />
               </div>
             </div>
 
